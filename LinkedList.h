@@ -7,18 +7,18 @@ class LinkedList
 protected:
 	typedef struct node
 	{
-		//æ³¨æ„, è¿™ä¸¤ä¸ªæˆå‘˜ä¸èƒ½é¢ å€’
+		//×¢Òâ, ÕâÁ½¸ö³ÉÔ±²»ÄÜµßµ¹
 		node * next;
 		T data;
 		node() :next(nullptr){}
 		node(T d) :next(nullptr), data(d){}
 	}* pnode;
-	pnode m_head;		//å¤´æŒ‡é’ˆ
-	pnode m_rear;		//å°¾æŒ‡é’ˆ
-	int m_length;		//é•¿åº¦
+	pnode m_head;		//Í·Ö¸Õë
+	pnode m_rear;		//Î²Ö¸Õë
+	int m_length;		//³¤¶È
 	void free(pnode p)
 	{
-		//ä½¿ç”¨é€’å½’ä¾æ¬¡é‡Šæ”¾èŠ‚ç‚¹æ‰€ç”³è¯·çš„ç©ºé—´
+		//Ê¹ÓÃµİ¹éÒÀ´ÎÊÍ·Å½ÚµãËùÉêÇëµÄ¿Õ¼ä
 		if (nullptr != p)
 		{
 			if (nullptr != p->next)
@@ -40,15 +40,16 @@ public:
 	{
 		free(m_head);
 		m_head = m_rear = nullptr;
+		m_length = 0;
 	}
 	bool add(T data)
 	{
-		//æ–°å»ºä¸€ä¸ªæ–°çš„èŠ‚ç‚¹, å¹¶åˆå§‹åŒ–èŠ‚ç‚¹
+		//ĞÂ½¨Ò»¸öĞÂµÄ½Úµã, ²¢³õÊ¼»¯½Úµã
 		pnode newnode = new node(data);
 		if (nullptr == newnode)
 			return false;
-		//åˆ¤æ–­è¡¨æ˜¯å¦ä¸ºç©ºè¡¨, å¦‚æœæ˜¯ä¸€ä¸ªç©ºè¡¨, åˆ™å°†æ–°å»ºçš„èŠ‚ç‚¹ä½œä¸ºè¡¨çš„ç¬¬ä¸€ä¸ªèŠ‚ç‚¹
-		//å¦‚æœè¡¨ä¸ä¸ºç©º, å°†æ–°å»ºçš„èŠ‚ç‚¹æ·»åŠ åˆ°é“¾è¡¨çš„å°¾éƒ¨
+		//ÅĞ¶Ï±íÊÇ·ñÎª¿Õ±í, Èç¹ûÊÇÒ»¸ö¿Õ±í, Ôò½«ĞÂ½¨µÄ½Úµã×÷Îª±íµÄµÚÒ»¸ö½Úµã
+		//Èç¹û±í²»Îª¿Õ, ½«ĞÂ½¨µÄ½ÚµãÌí¼Óµ½Á´±íµÄÎ²²¿
 		if (nullptr == m_head)
 			m_rear = m_head = newnode;
 		else
@@ -56,27 +57,36 @@ public:
 		++m_length;
 		return true;
 	}
-	//æ³¨æ„ä¸‹æ ‡æ˜¯ä»0å¼€å§‹, å‰æ’
+	//×¢ÒâÏÂ±êÊÇ´Ó0¿ªÊ¼, Ç°²å
 	bool insert(int i, T data)
 	{
-		//å°†è´Ÿä¸‹æ ‡è½¬åŒ–ä¸ºæ­£ä¸‹æ ‡, å¹¶åˆ¤æ–­iæ˜¯å¦éæ³•
+		//½«¸ºÏÂ±ê×ª»¯ÎªÕıÏÂ±ê, ²¢ÅĞ¶ÏiÊÇ·ñ·Ç·¨
 		i = (i + m_length) % m_length;
 		if (0 > i)
 			return false;
-		//åˆ¤æ–­æ˜¯å¦ä¸ºç©ºè¡¨, å¦‚æœæ ¹æ®iåˆ¤æ–­, å¹¶æ‰§è¡Œæ·»åŠ æ“ä½œ
+		//ÅĞ¶ÏÊÇ·ñÎª¿Õ±í, Èç¹û¸ù¾İiÅĞ¶Ï, ²¢Ö´ĞĞÌí¼Ó²Ù×÷
 		if (nullptr == m_head)
 			return (0 == i) ? add(data) : false;
-		//å¦‚æœè¡¨ä¸ä¸ºç©º, æ–°å»ºä¸€ä¸ªæ–°çš„èŠ‚ç‚¹, å¹¶åˆå§‹åŒ–èŠ‚ç‚¹çš„ç›¸å…³å‚æ•°
+		//Èç¹û±í²»Îª¿Õ, ĞÂ½¨Ò»¸öĞÂµÄ½Úµã, ²¢³õÊ¼»¯½ÚµãµÄÏà¹Ø²ÎÊı
 		pnode p = m_head, newnode = new node(data);
 		if (nullptr == newnode)
 			return false;
-		//å¦‚æœæ’å…¥çš„ä½ç½®ä¸ºè¡¨å¤´, å°†æ–°å»ºçš„èŠ‚ç‚¹ä½œä¸ºç¬¬ä¸€ä¸ªèŠ‚ç‚¹, å¹¶å°†æ–°å»ºèŠ‚ç‚¹çš„nextæŒ‡å‘å¤´æŒ‡é’ˆæŒ‡å‘çš„èŠ‚ç‚¹
+		//Èç¹û²åÈëµÄÎ»ÖÃÎª±íÍ·, ½«ĞÂ½¨µÄ½Úµã×÷ÎªµÚÒ»¸ö½Úµã, ²¢½«ĞÂ½¨½ÚµãµÄnextÖ¸ÏòÍ·Ö¸ÕëÖ¸ÏòµÄ½Úµã
 		if (0 == i)
 			return (m_head = (pnode)&(newnode->next = m_head)), ++m_length, true;
-		//å¦‚æœæ’å…¥çš„ä½ç½®ä¸æ˜¯è¡¨å¤´, åˆ™æ‰¾å‡ºå…¶å‰é©±èŠ‚ç‚¹, å°†æ–°å»ºçš„èŠ‚ç‚¹æ’åœ¨å‰é©±èŠ‚ç‚¹ä¹‹å
+		//Èç¹û²åÈëµÄÎ»ÖÃ²»ÊÇ±íÍ·, ÔòÕÒ³öÆäÇ°Çı½Úµã, ½«ĞÂ½¨µÄ½Úµã²åÔÚÇ°Çı½ÚµãÖ®ºó
 		while (p && --i > 0)
 			p = p->next;
-		return (nullptr != p) ? p->next = (pnode)&(newnode->next = p->next), ++m_length, true : false;
+		if (nullptr != p)
+		{
+			//Èç¹ûÇ°Çı½ÚµãÊÇÔ­Á´±íµÄÎ²½Úµã, ½« m_rear Ö¸Ïò newnode
+			if (nullptr == p->next)
+				m_rear = newnode;
+			p->next = (pnode)&(newnode->next = p->next), ++m_length;
+			return true;
+		}
+		else
+			return false;
 	}
 
 };
