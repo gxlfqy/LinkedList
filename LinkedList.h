@@ -88,7 +88,33 @@ public:
 		else
 			return false;
 	}
+	void LinkedList::reverse();
 
 };
+
+template<typename T>
+void LinkedList<T>::reverse()
+{
+	//如果该表不存在或只存在一个节点, 直接返回
+	if (nullptr == m_head || nullptr == m_head->next)
+		return;
+
+	pnode p, r, n;
+	p = n = nullptr;
+	m_rear = r = m_head;
+	//假设前驱节点和当前节点中没有连接
+	while (nullptr != r)
+	{
+		//保存当前节点的后继节点地址
+		n = r->next;
+		//将当前节点的下一个节点指向前驱节点
+		r->next = p;
+		//将当前节点作为前驱节点
+		p = r;
+		//移动当前节点位置
+		r = n;
+	}
+	m_head = p;
+}
 
 #endif // __LINKEDLIST_H_INCLUDED__
